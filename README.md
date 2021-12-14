@@ -1,4 +1,6 @@
-# display-seven-segment
+# Seven-segment Display
+
+![](challenge.gif)
 
 ## Project setup
 ```
