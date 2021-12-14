@@ -1,41 +1,158 @@
 <template>
   <div class="container">
-    <div class="grid">
-      <div class="a">
-        <div></div>
-      </div>
-      <div class="b">
-        <div></div>
-      </div>
-      <div class="c">
-        <div></div>
-      </div>
-      <div class="d">
-        <div></div>
-      </div>
-      <div class="e">
-        <div></div>
-      </div>
-      <div class="f">
-        <div></div>
-      </div>
-      <div class="g">
-        <div></div>
-      </div>
+    <div class="grid" @click="incrementCount">
+      <HorizontalDisplay class="a" :paint="paintA" />
+      <VerticalDisplay class="b" :paint="paintB" />
+      <VerticalDisplay class="c" :paint="paintC" />
+      <HorizontalDisplay class="d" :paint="paintD" />
+      <VerticalDisplay class="e" :paint="paintE" />
+      <VerticalDisplay class="f" :paint="paintF" />
+      <HorizontalDisplay class="g" :paint="paintG" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import VerticalDisplay from '@/components/VerticalDisplay.vue';
+import HorizontalDisplay from '@/components/HorizontalDisplay.vue';
+import { IPaint } from '@/interfaces/paint.interface';
 
 @Options({
   name: 'Display',
+  components: {
+    VerticalDisplay,
+    HorizontalDisplay,
+  },
+  data() {
+    return {
+      count: 0,
+      paintA: true,
+      paintB: true,
+      paintC: true,
+      paintD: true,
+      paintE: true,
+      paintF: true,
+      paintG: false,
+    };
+  },
+  methods: {
+    incrementCount(): void {
+      if (this.count === 9) {
+        this.count = 0;
+      } else {
+        this.count += 1;
+      }
+
+      this.paintDisplay();
+    },
+    paintDisplay(): void {
+      const displaysToPaint: { [key: number]: IPaint } = {
+        0: {
+          paintA: true,
+          paintB: true,
+          paintC: true,
+          paintD: true,
+          paintE: true,
+          paintF: true,
+          paintG: false,
+        },
+        1: {
+          paintA: false,
+          paintB: true,
+          paintC: true,
+          paintD: false,
+          paintE: false,
+          paintF: false,
+          paintG: false,
+        },
+        2: {
+          paintA: true,
+          paintB: true,
+          paintC: false,
+          paintD: true,
+          paintE: true,
+          paintF: false,
+          paintG: true,
+        },
+        3: {
+          paintA: true,
+          paintB: true,
+          paintC: true,
+          paintD: true,
+          paintE: false,
+          paintF: false,
+          paintG: true,
+        },
+        4: {
+          paintA: false,
+          paintB: true,
+          paintC: true,
+          paintD: false,
+          paintE: false,
+          paintF: true,
+          paintG: true,
+        },
+        5: {
+          paintA: true,
+          paintB: false,
+          paintC: true,
+          paintD: true,
+          paintE: false,
+          paintF: true,
+          paintG: true,
+        },
+        6: {
+          paintA: true,
+          paintB: false,
+          paintC: true,
+          paintD: true,
+          paintE: true,
+          paintF: true,
+          paintG: true,
+        },
+        7: {
+          paintA: true,
+          paintB: true,
+          paintC: true,
+          paintD: false,
+          paintE: false,
+          paintF: false,
+          paintG: false,
+        },
+        8: {
+          paintA: true,
+          paintB: true,
+          paintC: true,
+          paintD: true,
+          paintE: true,
+          paintF: true,
+          paintG: true,
+        },
+        9: {
+          paintA: true,
+          paintB: true,
+          paintC: true,
+          paintD: false,
+          paintE: false,
+          paintF: true,
+          paintG: true,
+        },
+      };
+      const test = this.count as number;
+      const display = displaysToPaint[test];
+
+      this.setState(display);
+    },
+    setState(object: {[key: string]: string | number}): void {
+      Object.assign(this, object);
+    },
+  },
 })
 export default class Display extends Vue {}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .container {
     display: flex;
     align-items: center;
@@ -43,6 +160,7 @@ export default class Display extends Vue {}
     height: 48rem;
 
     .grid {
+      cursor: pointer;
       display: grid;
       grid-template-areas:
         ". a a a ."
@@ -59,63 +177,6 @@ export default class Display extends Vue {}
       height: 90%;
       row-gap: 1rem;
       margin: 5rem 0;
-
-      & > div {
-        background-color: #5d5d5d;
-        position: relative;
-      }
-
-      .a:before, .d:before, .g:before {
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-        position: absolute;
-        border-right-color: #5d5d5d;
-        border-width: 2rem;
-        left: -2rem;
-        top: 0rem;
-        margin-left: -2rem;
-      }
-
-      .b:before, .c:before, .e:before, .f:before {
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-        position: absolute;
-        border-bottom-color: #5d5d5d;
-        border-width: 2.5rem;
-        left: 50%;
-        top: -5rem;
-        margin-left: -2.5rem;
-      }
-
-      .b > div:before, .c > div:before, .e > div:before, .f > div:before {
-        top: 100%;
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-        position: absolute;
-        border-top-color: #5d5d5d;
-        border-width: 2.5rem;
-        margin-left: -2.5rem;
-        left: 50%;
-      }
-
-      .a > div:before, .d > div:before, .g > div:before {
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-        position: absolute;
-        border-left-color: #5d5d5d;
-        border-width: 2rem;
-        right: -4rem;
-        top: -.07rem;
-        margin-left: -2rem;
-      }
 
       .a {
         grid-area: a;
